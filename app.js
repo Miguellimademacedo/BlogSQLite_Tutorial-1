@@ -1,8 +1,20 @@
-const express = require("express");
+const express = require("express"); // Importa lib do Express
+const sqlite3 = require("sqlite3"); // Importa lib do sqlite3
 
 const PORT = 8000; // Porta TCP do servidor HTTP da aplicação
 
-const app = express();
+const app = express(); // Instância para uso do Express
+
+const db = new sqlite3.Database("user.db"); // Instância para uso do Sqlite3, e usa o arquivo 'user.db'
+
+db.serialize(() => {
+  // Este método permite enviar comandos SQL em modo 'sequencial'
+  db.run(
+    "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)"
+  );
+});
+
+// Cria conexão com o banco de dados
 
 const index =
   "<a href='/home'> Home</a><a href='/sobre'> Sobre</a><a href='/login'> Login</a><a href='/cadastro'> Cadastro</a><a href='/info'> Info</a>";
