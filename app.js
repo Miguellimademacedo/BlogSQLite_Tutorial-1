@@ -1,7 +1,8 @@
+//   "biblioteca"
 const express = require("express"); // Importa lib do Express
 const sqlite3 = require("sqlite3"); // Importa lib do sqlite3
 
-const PORT = 8000; // Porta TCP do servidor HTTP da aplicação
+const PORT = 8000; // Irá chamar a Porta TCP do servidor HTTP da aplicação
 
 const app = express(); // Instância para uso do Express
 
@@ -14,7 +15,10 @@ db.serialize(() => {
   );
 });
 
-// Cria conexão com o banco de dados
+app.use("/static", express.static(__dirname + "/static"));
+
+// Configura EJS como o motor de visualização
+app.set("view engine", "ejs");
 
 const index =
   "<a href='/home'> Home</a><a href='/sobre'> Sobre</a><a href='/login'> Login</a><a href='/cadastro'> Cadastro</a><a href='/info'> Info</a>";
@@ -27,9 +31,11 @@ const info = 'Vc está na página "Info"<br><a href="/">Voltar</a>';
 /* Método express.get necessita de dois parâmetros
 // Na ARROW FUNCTION: o primeiro são os daods do servidor (REQUISITION - 'res'):
 o segundo, são os dados que serão enviados ao cliente (RESULT - 'res') */
+
 app.get("/", (req, res) => {
   // Rota raiz do meu servidor, acesse o browser com o endereço http://localhost:8000
-  res.send(index);
+  // res.send(index);
+  res.render("index");
 });
 
 app.get("/home", (req, res) => {
@@ -43,7 +49,12 @@ app.get("/sobre", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  res.send(login);
+  // res.send(login);
+  res.render("login");
+});
+
+app.post("/login", (req, res) => {
+  res.send("Login ainda não implementado.");
 });
 
 app.get("/cadastro", (req, res) => {
