@@ -10,18 +10,22 @@ const cpf = document.getElementById("cpf");
 const rg = document.getElementById("rg");
 const msgError = document.getElementsByClassName("msgError");
 
-/* ------ FUNÇÃO PARA RENDERIZAR AS DIFERENTES MENSAGENS DE ERRO! ------ */
+/* ------ FUNÇÃO PARA RENDERIZAR AS DIFERENTES MENSAGENS DE ERRO! ----------------- */
 const createDisplayMsgError = (mensagem) => {
   msgError[0].textContent = mensagem;
 };
 
-/* ---------------- FUNÇÃO PARA VERIFICAR O NOME ----------------------- */
+/* ---------------------------------------------------------------------------- */
+
+/* ---------------- FUNÇÃO PARA VERIFICAR O NOME ---------------------------- */
 const chekNome = () => {
   const nomeRegex = /^[A-Za-zÀ-ÿ\s]+$/;
   return nomeRegex.test(nome.value);
 };
 
-/* ---------- FUNÇÃO PARA VERIFICAR O EMAIL --------------------- */
+/* --------------------------------------------------------------------- */
+
+/* ---------- FUNÇÃO PARA VERIFICAR O EMAIL -------------------------- */
 const chekEmail = (email) => {
   const partesEmail = email.split("@");
 
@@ -38,10 +42,14 @@ const chekEmail = (email) => {
   }
 };
 
-/* ---------- FUNÇÃO PARA VERIFICAR IGUALDADE DAS SENHAS --------------- */
+/* ----------------------------------------------------------------------------- */
+
+/* ---------- FUNÇÃO PARA VERIFICAR IGUALDADE DAS SENHAS --------------------- */
 function chekPasswordMatch() {
   return password.value === ConfirmarSenha.value ? true : false;
 }
+
+/* ----------------------------------------------------------------------- */
 
 /* ----------- FUNÇÃO PARA INSERIR MASCARA NO TELEFONE ----------------- */
 function maskPhoneNumber(event) {
@@ -72,7 +80,37 @@ function maskPhoneNumber(event) {
   event.target.value = celular;
 }
 
-/* ------------- FUNÇÃO PARA VERIFICAR FORÇA DA SENHA ------------------ */
+/* -------------------------------------------------------------------------- */
+
+/* ----------- FUNÇÃO PARA INSERIR MASCARA NO CPF ------------------------- */
+document.getElementById("cpf").addEventListener("input", function (event) {
+  let maskCPF = event.target.value.replace(/\D/g, "");
+  maskCPF = maskCPF.substring(0, 11);
+
+  if (maskCPF.length > 9) {
+    maskCPF = maskCPF.replace(/(\d{3})(\d{3})(\d{3})/, "$1.$2.$3-");
+  } else if (maskCPF.length > 6) {
+    maskCPF = maskCPF.replace(/(\d{3})(\d{3})/, "$1.$2.");
+  } else if (maskCPF.length > 3) {
+    maskCPF = maskCPF.replace(/(\d{3})/, "$1.");
+  }
+  event.target.value = maskCPF;
+});
+/* --------------------------------------------------------------------- */
+
+/* ----------- FUNÇÃO PARA INSERIR MASCARA NO RG -------------------------------------- */
+document.getElementById("rg").addEventListener("input", function (event) {
+  let maskRG = event.target.value.replace(/\D/g, "");
+  maskRG = maskRG.substring(0, 9);
+
+  if (maskRG.length > 8) {
+    maskRG = maskRG.replace(/(\d{2})(\d{3})(\d{3})/, "$1.$2.$3-");
+  }
+  event.target.value = maskRG;
+});
+/* ----------------------------------------------------------------- */
+
+/* ------------- FUNÇÃO PARA VERIFICAR FORÇA DA SENHA ---------- */
 function chekPasswordStrength(password) {
   if (!/[a-z]/.test(password)) {
     return "A senha deve ter pelo menos uma letra minúscula!";
@@ -92,6 +130,34 @@ function chekPasswordStrength(password) {
 
   return null;
 }
+/* -------------------------------------------------------------------------- */
+
+/* ------------- FUNÇÃO PARA CRIAR "CHUVA" NO FORMULÁRIO ------------------ */
+
+const rainFunction = () => {
+  let rain = document.createElement("span");
+  // let cont_rain = document.getElementsByClassName("container_rain");
+  let cont_rain = document.querySelector(".container_rain");
+  let left = Math.floor(Math.random() * (310 - 65) + 65);
+  let duration = Math.random() * 5;
+
+  rain.classList.add("rain");
+  // cont_rain[0].appendChild(rain);
+  cont_rain.appendChild(rain);
+  rain.style.left = left + "px";
+  rain.style.animationDuration = 1 + duration;
+
+  setTimeout(() => {
+    // cont_rain[0].removeChild(rain);
+    cont_rain.removeChild(rain);
+  }, 1500);
+};
+
+setInterval(() => {
+  rainFunction();
+}, 250);
+
+/* ----------------------------------------------------------------------- */
 
 /* ------------- FUNÇÃO PARA VERIFICAR E ENVIAR DADOS ------------------ */
 function fetchDatas(event) {
@@ -139,7 +205,7 @@ function fetchDatas(event) {
   console.log("Formulário Enviado: ", JSON.stringify(formData, null, 2));
 }
 
-formulario.addEventListener("submit", fetchDatas);
+// formulario.addEventListener("submit", fetchDatas);
 
 nome.addEventListener("input", () => {
   if (nome.value && !chekNome()) {
