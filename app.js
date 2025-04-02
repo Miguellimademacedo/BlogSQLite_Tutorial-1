@@ -31,13 +31,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Configura EJS como o motor de visualização
 app.set("view engine", "ejs");
 
-const index =
-  "<a href='/home'> Home</a><a href='/sobre'> Sobre</a><a href='/login'> Login</a><a href='/cadastro'> Cadastro</a><a href='/info'> Info</a>";
-const home = 'Vc está na página "Home"<br><a href="/">Voltar</a>';
-const sobre = 'Vc está na página "Sobre"<br><a href="/">Voltar</a>';
-const login = 'Vc está na página "Login"<br><a href="/">Voltar</a>';
-const cadastro = 'Vc está na página "Cadastro"<br><a href="/">Voltar</a>';
-const info = 'Vc está na página "Info"<br><a href="/">Voltar</a>';
+// const index =
+//   "<a href='/home'> Home</a><a href='/sobre'> Sobre</a><a href='/login'> Login</a><a href='/cadastro'> Cadastro</a><a href='/info'> Info</a>";
+// const home = 'Vc está na página "Home"<br><a href="/">Voltar</a>';
+// const sobre = 'Vc está na página "Sobre"<br><a href="/">Voltar</a>';
+// const login = 'Vc está na página "Login"<br><a href="/">Voltar</a>';
+// const cadastro = 'Vc está na página "Cadastro"<br><a href="/">Voltar</a>';
+// const info = 'Vc está na página "Info"<br><a href="/">Voltar</a>';
 
 /* Método express.get necessita de dois parâmetros
 // Na ARROW FUNCTION: o primeiro são os daods do servidor (REQUISITION - 'res'):
@@ -46,34 +46,22 @@ o segundo, são os dados que serão enviados ao cliente (RESULT - 'res') */
 app.get("/", (req, res) => {
   // Rota raiz do meu servidor, acesse o browser com o endereço http://localhost:8000
   // res.send(index);
+  console.log("GET /index");
   res.render("index");
+  //res.redirect("/cadastro"); // Redirecinqa para a ROTA cadastro
 });
 
-app.get("/home", (req, res) => {
-  res.send(home);
-});
-
-// Programação de rotas do método GET do HTTP 'app.get()'
-app.get("/sobre", (req, res) => {
-  // Rota raiz do meu servidor, acesse o browser com o endereço http://localhost:8000/sobre
-  res.send(sobre);
-});
-
-app.get("/login", (req, res) => {
-  // res.send(login);
-  res.render("login");
-});
-
-app.post("/login", (req, res) => {
-  res.send("Login ainda não implementado.");
-});
-
+// GET do cadastro
 app.get("/cadastro", (req, res) => {
+  console.log("GET /cadastro");
   // Rota raiz do meu servidor, acesse o browser com o endereço http://localhost:8000/cadastro
-  res.send(cadastro);
+  res.render("cadastro");
 });
 
+// POST do cadastro
 app.post("/cadastro", (req, res) => {
+  console.log("POST /cadastro");
+  // Linha para depurar se está vindo dados no req.nody
   req.body
     ? console.log(JSON.stringify(req.body))
     : console.log(`Body vazio: ${req.body}`);
@@ -81,6 +69,36 @@ app.post("/cadastro", (req, res) => {
   res.send(
     `Bem-vindo usuário: ${req.body.nome}, seu email é ${req.body.email}`
   );
+});
+
+// app.get("/home", (req, res) => {
+//   res.send(home);
+// });
+
+// Programação de rotas do método GET do HTTP 'app.get()'
+app.get("/sobre", (req, res) => {
+  console.log("GET /sobre");
+  // Rota raiz do meu servidor, acesse o browser com o endereço http://localhost:8000/cadastro
+  res.render("sobre");
+});
+
+app.get("/login", (req, res) => {
+  console.log("GET /login");
+  // res.send(login);
+  // Rota raiz do meu servidor, acesse o browser com o endereço http://localhost:8000/info
+  res.render("login");
+});
+
+app.post("/login", (req, res) => {
+  res.send("Login ainda não implementado.");
+});
+
+app.get("/foradecasa", (req, res) => {
+  // Rota raiz do meu servidor, acesse o browser com o endereço http://localhost:8000
+  // res.send(index);
+  console.log("GET /foradecasa");
+  res.render("foradecasa");
+  //res.redirect("/cadastro"); // Redirecinqa para a ROTA cadastro
 });
 
 // app.get("/info", (req, res) => {
