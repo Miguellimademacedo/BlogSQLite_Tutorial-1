@@ -54,7 +54,7 @@ app.get("/", (req, res) => {
 // GET do cadastro
 app.get("/cadastro", (req, res) => {
   console.log("GET /cadastro");
-  // Rota raiz do meu servidor, acesse o browser com o endereço http://localhost:8000/cadastro
+  // Linha para depurar se está vindo dados no req.body
   res.render("cadastro");
 });
 
@@ -62,13 +62,42 @@ app.get("/cadastro", (req, res) => {
 app.post("/cadastro", (req, res) => {
   console.log("POST /cadastro");
   // Linha para depurar se está vindo dados no req.nody
-  req.body
+  !req.body
     ? console.log(JSON.stringify(req.body))
     : console.log(`Body vazio: ${req.body}`);
 
-  res.send(
-    `Bem-vindo usuário: ${req.body.nome}, seu email é ${req.body.email}`
-  );
+  const { username, password, email, celular, cpf, rg } = req.body;
+  // Colocar aqui as validações e inclusão no banco de dados do cadastro do usuario
+  // 1. Validar dados do usuário
+  // 2. Saber-se ele já existe no banco
+  const query =
+    "SELECT * FROM users WHERE email=? OR cpf=? OR rg=? OR username=?";
+  db.get(query, [email, cpf, rg, username], (err, row) => {
+    if (err) throw err;
+    console.log(`${JSON.stringify(row)}`);
+    if (row) {
+      // A variável 'row' irá retornar os dados do banco de dados,
+      // executado através do SQL, variável query
+      res.send("Usuário já cadastrado, refaça o cadastro");
+    } else {
+      // 3. Se o usuário não existe no banco cadastrar
+      const insertQuery =
+        "INSERT INTO users (username, password, email, celular, cpf, rg) VALUES (?,?,?,?,?,?)";
+      db.run(
+        insertQuery,
+        [username, password, email, celular, cpf, rg],
+        (err) => {
+          // Inserir a lógica do INSERT
+          if (err) throw err;
+          res.send("Usuário cadastrado, com sucesso");
+        }
+      );
+    }
+  });
+
+  // res.send(
+  //   `Bem-vindo usuário: ${req.body.nome}, seu email é ${req.body.email}`
+  // );
 });
 
 // app.get("/home", (req, res) => {
