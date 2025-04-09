@@ -55,7 +55,8 @@ app.get("/usuarios", (req, res) => {
   const query = "SELECT * FROM users";
   db.all(query, (err, row) => {
     console.log(`GET /usarios ${JSON.stringify(row)}`);
-    res.send("Lista de usuários");
+    // res.send("Lista de usuários");
+    res.render("usertable");
   });
 });
 
