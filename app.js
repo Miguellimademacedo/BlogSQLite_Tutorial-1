@@ -48,7 +48,15 @@ app.get("/", (req, res) => {
   // res.send(index);
   console.log("GET /index");
   res.render("index");
-  //res.redirect("/cadastro"); // Redirecinqa para a ROTA cadastro
+  //res.redirect("/cadastro"); // Redireciona para a ROTA cadastro
+});
+
+app.get("/usuarios", (req, res) => {
+  const query = "SELECT * FROM users";
+  db.all(query, (err, row) => {
+    console.log(`GET /usarios ${JSON.stringify(row)}`);
+    res.send("Lista de usuários");
+  });
 });
 
 // GET do cadastro
@@ -60,6 +68,8 @@ app.get("/cadastro", (req, res) => {
 
 // POST do cadastro
 app.post("/cadastro", (req, res) => {
+  // req: Informação que é mandada pro servidor pelo cliente
+  // res: É a resposta do servidor para o cliente
   console.log("POST /cadastro");
   // Linha para depurar se está vindo dados no req.nody
   !req.body
