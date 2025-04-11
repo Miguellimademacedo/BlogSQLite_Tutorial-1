@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Atividade Formulário</title>
-
-    <link rel="stylesheet" href="/static/styles/styles.css" />
-
-    <script src="/static/scripts/script.js" defer></script>
-  </head>
+  <%- include("../partials/head"); %>
+<!-- 
   <body>
     <%# Este é um comentário em EJS %>
-    <!-- <header>
+     <header>
       <a href="" class="logo">LOGO</a>
       <nav>
         <a href="">Home</a>
@@ -19,9 +12,9 @@
         <a href="/cadastro">Cadastro</a>
         <a href="/login">Login</a>
       </nav>
-    </header> -->
+    </header>  -->
 
-    <%- include("menu") %>
+    <%- include("../partials/menu") %>
 
     <div class="container_rain">
       <span class="cloud"></span>
@@ -126,6 +119,6 @@
         </div>
       </form>
     </section>
-    <%- include("footer") %>
+    <%- include("../partials/footer") %>
   </body>
 </html>
