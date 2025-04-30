@@ -11,7 +11,7 @@
         <a href="/login">Login</a>
       </nav>
     </header> -->
-    <%- include("../partials/menu") %>
+    <%- include("../partials/menu"); %>
 
     <div class="container_rain">
       <span class="cloud"></span>
@@ -27,8 +27,10 @@
           descubra novos lugares ao redor do mundo!
         </p>
       </div>
-      <div style="font-size: 32px"><%- include("../partials/usertable") %></div>
+      <div style="font-size: 32px">
+        <%- include("../partials/usertable"); %>
+      </div>
     </section>
-    <%- include("../partials/footer") %>
+    <%- include("../partials/footer"); %>
   </body>
 </html>
