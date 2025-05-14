@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
   <%- include("../partials/head"); %>
-<!-- 
+
   <body>
-    <%# Este é um comentário em EJS %>
-     <header>
+    <!-- <header>
       <a href="" class="logo">LOGO</a>
       <nav>
         <a href="">Home</a>
@@ -12,8 +11,7 @@
         <a href="/cadastro">Cadastro</a>
         <a href="/login">Login</a>
       </nav>
-    </header>  -->
-
+    </header> -->
     <%- include("../partials/menu") %>
 
     <div class="container_rain">
@@ -24,100 +22,13 @@
 
     <section class="container">
       <div class="image_container">
-        <h1>Crie sua conta</h1>
+        <h1>Sobre a Nossa Empresa</h1>
         <p>
           Compartilhe suas aventuras e <br />
           descubra novos lugares ao redor do mundo!
         </p>
       </div>
-      <form id="cadastroForm" method="post" action="/cadastro">
-        <div class="title">
-          <h1>Cadastre-se</h1>
-          <p>Preencha os campos abaixo e torne-se parte da nossa comunidade.</p>
-        </div>
-
-        <div class="input_data">
-          <input
-            type="text"
-            id="nome"
-            name="username"
-            value="marcio"
-            required
-          />
-          <label for="">Nome</label>
-        </div>
-
-        <div class="input_data">
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value="marcio@gmail.com"
-            required
-          />
-          <label for="">Email</label>
-        </div>
-        <div class="input_data">
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value="Aa123456!"
-            required
-          />
-          <label for="">Senha</label>
-        </div>
-        <div class="input_data">
-          <input
-            type="password"
-            id="ConfirmarSenha"
-            name="ConfirmarSenha"
-            value="Aa123456!"
-            required
-          />
-          <label for="">Confirmar Senha</label>
-        </div>
-        <div class="input_data">
-          <input
-            type="tel"
-            id="celular"
-            name="celular"
-            maxlength="15"
-            value="19 9999 9999"
-            required
-          />
-          <label for="">Celular</label>
-        </div>
-        <div class="input_data">
-          <input
-            type="text"
-            id="cpf"
-            name="cpf"
-            value="111222333-44"
-            maxlength="14"
-            oninput="maskCPF(this)"
-            required
-          />
-          <label for="">CPF</label>
-        </div>
-        <div class="input_data">
-          <input
-            type="text"
-            id="rg"
-            name="rg"
-            value="111.222.333-4"
-            maxlength="9"
-            oninput="maskRG(this)"
-            required
-          />
-          <label for="">RG</label>
-        </div>
-
-        <div class="bntArea">
-          <p class="msgError"></p>
-          <button id="bntSubmit" type="submit">Enviar</button>
-        </div>
-      </form>
+      <img src="../../imagens/erro-404-redirecionamento.webp" alt="" />
     </section>
     <%- include("../partials/footer") %>
   </body>

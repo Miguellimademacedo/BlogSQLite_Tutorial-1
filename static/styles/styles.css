@@ -121,6 +121,14 @@ header nav a:hover {
   }
 }
 
+table,
+th,
+td {
+  border: 1px solid;
+  padding: 10px;
+  background-color: #375534;
+}
+
 .container {
   width: 80%;
   height: 80%;
@@ -150,6 +158,7 @@ header nav a:hover {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .image_container::before {

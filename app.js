@@ -55,6 +55,7 @@ app.set("view engine", "ejs");
 /* Método express.get necessita de dois parâmetros
 // Na ARROW FUNCTION: o primeiro são os daods do servidor (REQUISITION - 'res'):
 o segundo, são os dados que serão enviados ao cliente (RESULT - 'res') */
+config = { titulo: "Blog da turma I2HNA - SESI Nova Odessa", rodape: "" };
 
 app.get("/", (req, res) => {
   // Rota raiz do meu servidor, acesse o browser com o endereço http://localhost:8000
@@ -63,18 +64,17 @@ app.get("/", (req, res) => {
   // res.render("pages/index");
   //res.redirect("/cadastro"); // Redireciona para a ROTA cadastro
 
-  config = { titulo: "Blog da turma I2HNA - SESI Nova Odessa", rodape: "" };
-  //config.rodape = "1";
-  res.render("pages/index", config);
+  config.rodape = "";
+  res.render("pages/index", { ...config, req: req });
   // res.redirect("/cadastro"); // Redireciona para a ROTA cadastro
 });
 
 app.get("/usuarios", (req, res) => {
-  const query = "SELECT * FROM users";
+  const query = "SELECT * FROM users  ";
   db.all(query, (err, row) => {
     console.log(`GET /usarios ${JSON.stringify(row)}`);
     // res.send("Lista de usuários");
-    res.render("partials/usertable", config);
+    res.render("partials/usertable", { ...config, req: req });
   });
 });
 
@@ -82,7 +82,7 @@ app.get("/usuarios", (req, res) => {
 app.get("/cadastro", (req, res) => {
   console.log("GET /cadastro");
   // Linha para depurar se está vindo dados no req.body
-  res.render("pages/cadastro", config);
+  res.render("pages/cadastro", { ...config, req: req });
 });
 
 // POST do cadastro
@@ -137,23 +137,23 @@ app.post("/cadastro", (req, res) => {
 app.get("/sobre", (req, res) => {
   console.log("GET /sobre");
   // Rota raiz do meu servidor, acesse o browser com o endereço http://localhost:8000/cadastro
-  res.render("pages/sobre", config);
+  res.render("pages/sobre", { ...config, req: req });
 });
 
 app.get("/login", (req, res) => {
   console.log("GET /login");
   // res.send(login);
   // Rota raiz do meu servidor, acesse o browser com o endereço http://localhost:8000/info
-  res.render("pages/login", config);
+  res.render("pages/login", { ...config, req: req });
 });
 
 app.post("/login", (req, res) => {
   console.log("POST /login");
-  const
-
+  const { username, password } = req.body;
+  console.log(`${JSON.stringify(req.body)}`);
   // Consultar o usuário no banco de dados
   const query = "SELECT * FROM users WHERE username = ? AND password = ?";
-  db.get(query, [username, password], (err, now) => {
+  db.get(query, [username, password], (err, row) => {
     if (err) throw err;
 
     // Se o usuário válido -> registra a sessão e redireciona para o dashboard
@@ -177,8 +177,35 @@ app.post("/login", (req, res) => {
 // });
 
 app.get("/dashboard", (req, res) => {
-  console.log("GET /dashboard");
-  res.render("pages/dashboard", config);
+  if (req.session.loggedin) {
+    db.all("SELECT * FROM users", [], (err, row) => {
+      if (err) throw err;
+      res.render("pages/dashboard", {
+        ...config,
+        dados: row,
+        req: req,
+      });
+    });
+  } else {
+    console.log("Tentativa de acesso a área restrita");
+  }
+});
+
+app.get("/home", (req, res) => {
+  console.log("GET /home");
+  res.render("pages/home", { ...config, req: req });
+});
+
+// Rota para processar a saida (logout) do usuário
+// Utilize-o para encerrar a sessão do usuário
+// Dica 1: Coloque um link de 'SAIR' na sua aplicação web
+// Dica 2: Você pode implementar um controle de tempo de sessão e encerrar a sessão do usuário caso este tempo passe.
+app.get("/logout", (req, res) => {
+  console.log("GET /logout");
+  // Exemplo de uma rota (END POINT) controlado pela sessão do usuário logado.
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
 });
 
 // app.get("/info", (req, res) => {
@@ -191,6 +218,15 @@ app.get("/dashboard", (req, res) => {
 // });
 
 // app.listen() deve ser o último comando da aplicação (app.js)
+
+// Middleware para capturar rotas não existentes
+app.use("*", (req, res) => {
+  console.log("ERRO 404");
+  //Envia uma resposta de erro 404
+  config.titulo = "Página não encontrada - ERRO 404";
+  res.status(404).render("pages/404", { ...config, req: req });
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor sendo executado na porta ${PORT}!`);
 });
