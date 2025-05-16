@@ -13,7 +13,7 @@
 
   <tbody>
     <% for (let i = 0; i < dados.length ; i++) { %>
-    <tr <%= dados[i].id ? `style="color: whitw; font-style: bold;" ` : `` %>>
+    <tr <%- req.session.username==dados[i].username ? `style="color: orange; font-style: bold;" ` : `` %>>
       <td><%= dados[i].id %></td>
       <td><%= dados[i].username %></td>
       <td><%= dados[i].email%></td>

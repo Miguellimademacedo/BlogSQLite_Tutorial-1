@@ -91,23 +91,29 @@ app.post("/cadastro", (req, res) => {
   // res: É a resposta do servidor para o cliente
   console.log("POST /cadastro");
   // Linha para depurar se está vindo dados no req.nody
-  !req.body
-    ? console.log(JSON.stringify(req.body))
-    : console.log(`Body vazio: ${req.body}`);
+  // !req.body
+  //   ? console.log(JSON.stringify(req.body))
+  //   : console.log(`Body vazio: ${req.body}`);
 
   const { username, password, email, celular, cpf, rg } = req.body;
+  console.log(req.body);
   // Colocar aqui as validações e inclusão no banco de dados do cadastro do usuario
   // 1. Validar dados do usuário
   // 2. Saber-se ele já existe no banco
   const query =
-    "SELECT * FROM users WHERE email=? OR cpf=? OR rg=? OR username=?";
-  db.get(query, [email, cpf, rg, username], (err, row) => {
+    "SELECT * FROM users WHERE username=?";
+  db.get(query, [username], (err, row) => {
+
+    //    "SELECT * FROM users WHERE email=? OR cpf=? OR rg=? OR username=?";
+    //  db.get(query, [email, cpf, rg, username], (err, row) => {
+
     if (err) throw err;
-    console.log(`${JSON.stringify(row)}`);
+    console.log(`row: ${JSON.stringify(row)}`);
     if (row) {
+
       // A variável 'row' irá retornar os dados do banco de dados,
       // executado através do SQL, variável query
-      res.send("Usuário já cadastrado, refaça o cadastro");
+      res.render("pages/usuario_existente", { ...config, req: req });
     } else {
       // 3. Se o usuário não existe no banco cadastrar
       const insertQuery =
@@ -118,7 +124,7 @@ app.post("/cadastro", (req, res) => {
         (err) => {
           // Inserir a lógica do INSERT
           if (err) throw err;
-          res.send("Usuário cadastrado, com sucesso");
+          res.render("pages/usuario_cadastrado", { ...config, req: req });
         }
       );
     }
@@ -158,12 +164,16 @@ app.post("/login", (req, res) => {
 
     // Se o usuário válido -> registra a sessão e redireciona para o dashboard
     if (row) {
+      console.log("POST /login: ", row);
+
       req.session.loggedin = true;
       req.session.username = username;
       res.redirect("/dashboard");
     } // Se não, envia a mensagem de erro (Usuário inválido)
     else {
-      res.send("Usuário inválido");
+      console.log("POST /login - usuário Inválido");
+      res.render("pages/usuario_invalido", { ...config, req: req });
+
     }
   });
 });
@@ -175,6 +185,7 @@ app.post("/login", (req, res) => {
 //   res.render("foradecasa");
 //   //res.redirect("/cadastro"); // Redirecinqa para a ROTA cadastro
 // });
+
 
 app.get("/dashboard", (req, res) => {
   if (req.session.loggedin) {
@@ -230,3 +241,4 @@ app.use("*", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor sendo executado na porta ${PORT}!`);
 });
+
